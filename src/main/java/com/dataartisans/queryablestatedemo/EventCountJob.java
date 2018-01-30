@@ -59,8 +59,6 @@ public class EventCountJob {
     config.setInteger(ConfigConstants.JOB_MANAGER_IPC_PORT_KEY, port);
     config.setInteger(ConfigConstants.LOCAL_NUMBER_TASK_MANAGER, 1);
     config.setInteger(ConfigConstants.TASK_MANAGER_NUM_TASK_SLOTS, parallelism);
-    // In a non MiniCluster setup queryable state is enabled by default.
-    config.setBoolean(QueryableStateOptions.SERVER_ENABLE, true);
 
     FlinkMiniCluster flinkCluster = new LocalFlinkMiniCluster(config, false);
     try {
@@ -89,7 +87,7 @@ public class EventCountJob {
 
       flinkCluster.submitJobAndWait(jobGraph, false);
     } finally {
-      flinkCluster.shutdown();
+//      flinkCluster.shutdown();
     }
   }
 
