@@ -23,6 +23,7 @@ import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.TimeUnit;
 
 import jline.console.ConsoleReader;
+import org.apache.flink.api.common.ExecutionConfig;
 import org.apache.flink.api.common.JobID;
 import org.apache.flink.api.common.state.FoldingState;
 import org.apache.flink.api.common.state.FoldingStateDescriptor;
@@ -36,7 +37,7 @@ public class EventCountClient {
 			throw new IllegalArgumentException("Missing required job ID argument. "
 					+ "Usage: ./EventCountClient <jobID> [jobManagerHost] [jobManagerPort]");
 		}
-		String jobIdParam = "dea37f0392e918c09169f6431d293717"; //args[0];
+		String jobIdParam = args[0];
 
 		// configuration
 		final JobID jobId = JobID.fromHexString(jobIdParam);
@@ -44,6 +45,7 @@ public class EventCountClient {
 		final int jobManagerPort = args.length > 1 ? Integer.parseInt(args[1]) : 6124;
 
 		QueryableStateClient client = new QueryableStateClient(jobManagerHost, jobManagerPort);
+		client.setExecutionConfig(new ExecutionConfig());
 
 		// state descriptor for the state to be fetched
 		FoldingStateDescriptor<BumpEvent, Long> countingState = new FoldingStateDescriptor<>(
